@@ -4,7 +4,7 @@ var https = require('https');
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
-function CSVToArray(strData, strDelimiter) {
+function convertCSVToArray(strData, strDelimiter) {
   // Check to see if the delimiter is defined. If not,
   // then default to comma.
   strDelimiter = (strDelimiter || ",");
@@ -90,17 +90,11 @@ function CSVToArray(strData, strDelimiter) {
 function getCSV(link) {
 
   return new Promise(function (resolve, reject) {
-    try {
-      if (link === undefined) {
-        reject("Parameter 'link' is missing!");
-      }
-      try {
-        const options = new URL(link);        
-      } catch (error) {
-        
-      }
-      //const options = new URL(link);
+
+    try {      
+      const options = new URL(link);
       var req = https.request(options, function (res) {
+
         var chunks = [];
         var json = { rows: [] };
 
@@ -110,9 +104,9 @@ function getCSV(link) {
 
         res.on("end", function (chunk) {
           var body = Buffer.concat(chunks);
-          // parse CSV to array
-          var rows = CSVToArray(body.toString().split(','), ',');
-          // how many columns has the CSV table 
+
+          var rows = convertCSVToArray(body.toString().split(','), ',');
+          // get first row to see how many columns has the CSV table 
           var rowColumnTitles = rows[0];
           var rowColumnCount = rowColumnTitles.length;
           // remove column titles row
@@ -132,14 +126,19 @@ function getCSV(link) {
         });
 
         res.on("error", function (error) {
-          console.error(error);
+          //console.error(error);
           reject(error);
         });
       });
+
+      req.on('error', function (error) {
+        //console.error(error);
+        reject(error);
+      });
+
       req.end();
     } catch (error) {
       //console.log(JSON.stringify(error, null, 2));
-      console.log(">>> HERE <<<"); 
       reject(error);
     }
   });
@@ -147,9 +146,17 @@ function getCSV(link) {
 
 module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  getCSV(req.body.link).then(function (j) {
-    res.status(200).json(j);
-  }).catch(function (e) {
-    res.status(400).json({ 'error': e });
+  
+  if(req.body === undefined || req.body.link === undefined) {
+    res.status(400).json({ 'error': 'Request body or parameter is missing or is invalid. Request body should contain the following JSON structure: { link: https://docs.google.com/link_to_csv_sheet }'});
+    return;
+  }
+  
+  getCSV(req.body.link)
+  .then(function (content) {
+    res.status(200).json(content);
+  })
+  .catch(function (error) {
+    res.status(400).json({ 'error': error });
   });
 }
