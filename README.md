@@ -1,5 +1,5 @@
 # gcsv2json
-Google CSV to JSON converter - (https://gcsv2json.now.sh/)[https://gcsv2json.now.sh/].
+Google CSV to JSON converter - https://gcsv2json.now.sh/.
 
 This API converts single Google Sheets published to the web in CSV format to JSON format.
 
