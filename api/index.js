@@ -147,16 +147,30 @@ function getCSV(link) {
 module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   
-  if(req.body === undefined || req.body.link === undefined) {
-    res.status(400).json({ 'error': 'Request body or parameter is missing or is invalid. Request body should contain the following JSON structure: { link: https://docs.google.com/link_to_csv_sheet }'});
-    return;
+  let linkToCSV = '';
+
+  if (req.query !== undefined && JSON.stringify(req.query) !== '{}') {
+    if (req.query.csv !== undefined) {
+      linkToCSV = req.query.csv;
+    } else {
+      res.status(400).json({ 'error': 'Query parameter \'csv\' is missing. Query value should be encoded with encodeURIComponent. Example query: api/?csv=https%3A%2F%2Fdocs.google.com%2Fspreadsheets...'});
+      return;
+    }
+  } else {
+
+    if(req.body === undefined || req.body.csv === undefined) {
+      res.status(400).json({ 'error': 'Request body or parameter is missing or is invalid. Request body should contain the following JSON structure: { csv: https://docs.google.com/link_to_csv_sheet }'});
+      return;
+    }    
+    linkToCSV = req.body.csv;
   }
-  
-  getCSV(req.body.link)
+
+  getCSV(linkToCSV)
   .then(function (content) {
     res.status(200).json(content);
   })
   .catch(function (error) {
     res.status(400).json({ 'error': error });
   });
+
 }

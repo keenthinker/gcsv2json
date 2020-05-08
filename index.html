@@ -4,23 +4,56 @@
         <title>Google CSV to JSON API converter</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script>
-            //$(document).ready(function() {
-                // fetch('http://localhost:3000/api')
-                // .then(response => response.json())
-                // .then(data => console.log(data));
+            $(document).ready(function() {
 
-                // fetch("http://localhost:3000/api", {
-                //     method: 'POST',
-                //     mode: 'cors', // no-cors, *cors, same-origin
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify('{"link" : "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa/pub?gid=1200614530&single=true&output=csv"}')
-                // })
-                // .then(response => response.json())
-                // .then(data => console.log(data));
-            //});
+                let data = {
+                    "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa/pub?gid=1200614530&single=true&output=csv"
+                };
+                // request with body
+                fetch("http://localhost:3000/api", {
+                    method: 'POST',
+                    mode: 'cors', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data) 
+                })
+                .then(response => response.json())
+                .then(data => console.log(data));
+                // query
+                fetch("http://localhost:3000/api/?csv=" + encodeURIComponent(data.csv))
+                .then(response => response.json())
+                .then(data => console.log(data));
+
+            });
         </script>
     </head>
-    <body>ToDo</body>
+    <body>
+        <div>
+            Example call with query parameter (parameter should be encoded with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">encodeURIComponent</a>):
+        </div>
+        <div>
+            <pre>
+    http://localhost:3000/api/?csv=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa%2Fpub%3Fgid%3D1200614530%26single%3Dtrue%26output%3Dcsv
+            </pre>
+        </div>
+        <div><br/></div>
+        <div>
+            Example request with data in body:
+        </div>
+        <div>
+            <pre>
+    fetch("http://localhost:3000/api", {
+        method: 'POST',
+        mode: 'cors', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) 
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
+            </pre>
+        </div>
+    </body>
 </html>
