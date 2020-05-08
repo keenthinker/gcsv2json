@@ -14,7 +14,7 @@ The API can be used in two ways:
 * using a request with data in body:
 
 ```javascript
-    fetch("http://localhost:3000/api", {
+    fetch("https://gcsv2json.now.sh/api", {
         method: 'POST',
         mode: 'cors', 
         headers: {
