@@ -14,6 +14,10 @@ The API can be used in two ways:
 * using a request with data in body:
 
 ```javascript
+    let data = {
+        "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa/pub?gid=1200614530&single=true&output=csv"
+    };
+
     fetch("https://gcsv2json.now.sh/api", {
         method: 'POST',
         mode: 'cors', 
