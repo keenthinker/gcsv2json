@@ -6,7 +6,7 @@
         <script>
 
             let data = {
-                "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa/pub?gid=1200614530&single=true&output=csv"
+                "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ/pub?gid=0&single=true&output=csv"
             };
 
             function callUsingQueryParameter() {
@@ -36,17 +36,45 @@
                 $('#requestWithBody').click(() => {
                     callUsingRequestWithBody();
                 });
+
+                $('#convertCSV2JSON').click(() => {
+                    csv = $('#publishedCSV').val();
+                    fetch("/api/?csv=" + encodeURIComponent(csv))
+                    .then(response => response.json())
+                    .then(data => {
+                        $('#output').text(JSON.stringify(data, null, 2));
+                    });
+                });
             });
 
         </script>
     </head>
     <body>
         <div>
-            Example call with query parameter (parameter should be encoded with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">encodeURIComponent</a>):
+            <h1>Google CSV to JSON converter</h1>
+        </div>
+        <div>
+            <p>This API converts single Google Sheets published to the web in CSV format to JSON format.</p>
+            <p>The API can be used in two ways:</p>
+            <ul>
+                <li>with query parameter</li>
+                <li>request with data in body</li>
+            </ul>
+        </div>
+        <div><h3>Live demo</h3></div>
+        <div>
+            <input type="text" placeholder="Link of the published CSV from Google Tables" id="publishedCSV" size="125"/>
+        </div>
+        <div><button id="convertCSV2JSON">Convert</button></div>
+        <div><span id="output">JSON will appear here</span></div>
+        <div>If you don't have a document yet try it with this one: https://docs.google.com/spreadsheets/d/e/2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ/pub?gid=0&single=true&output=csv</div>
+        <div><h3>Examples</h3></div>
+        <div>
+            &#9658;Call with query parameter (parameter should be encoded with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">encodeURIComponent</a>):
         </div>
         <div>
             <pre>
-    http://localhost:3000/api/?csv=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vSMtzdDStex7LdeOQVEDXwYYK6X-y2RESCfo0OaNy6KdchNeSuzDF3eUDIDbk-u_L-YWaVtxQ1bUACa%2Fpub%3Fgid%3D1200614530%26single%3Dtrue%26output%3Dcsv
+    http://localhost:3000/api/?csv=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ%2Fpub%3Fgid%3D0%26single%3Dtrue%26output%3Dcsv
             </pre>
         </div>
         <div>
@@ -54,10 +82,14 @@
         </div>
         <div><br/></div>
         <div>
-            Example request with data in body:
+            &#9658;Request with data in body:
         </div>
         <div>
             <pre>
+    let data = {
+        "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ/pub?gid=0&single=true&output=csv"
+    };
+    
     fetch("http://localhost:3000/api", {
         method: 'POST',
         mode: 'cors', 
