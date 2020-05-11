@@ -7,7 +7,7 @@
         <meta name="author" content="keenthinker.com">
         <meta name="generator" content="keenthinker.com">
         <meta name="theme-color" content="#563d7c">
-        <title>Google CSV to JSON API converter</title>
+        <title>Google CSV to JSON API converter live demo</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous" />
         <style>
             .bd-placeholder-img {
@@ -30,7 +30,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha256-oKpAiD7qu3bXrWRVxnXLV1h7FlNV+p5YJBIr8LOCFYw=" crossorigin="anonymous"></script>
         <script>
 
-            let data = {
+            var data = {
                 "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ/pub?gid=0&single=true&output=csv"
             };
 
@@ -41,6 +41,7 @@
             }
 
             function callUsingRequestWithBody() {
+                data.csv = $('#publishedCSV').val();
                 fetch("/api", {
                     method: 'POST',
                     mode: 'cors', 
@@ -50,7 +51,7 @@
                     body: JSON.stringify(data) 
                 })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => $('#output').text(JSON.stringify(data, null, 2)));
             }
 
             $(document).ready(function() {
@@ -66,9 +67,7 @@
                     csv = $('#publishedCSV').val();
                     fetch("/api/?csv=" + encodeURIComponent(csv))
                     .then(response => response.json())
-                    .then(data => {
-                        $('#output').text(JSON.stringify(data, null, 2));
-                    });
+                    .then(data => $('#output').text(JSON.stringify(data, null, 2)));
                 });
             });
 
@@ -81,23 +80,55 @@
               <div class="inner">
                 <h3 class="masthead-brand">CSV to JSON</h3>
                 <nav class="nav nav-masthead justify-content-center">
-                  <a class="nav-link active" href="#">Start</a>
-                  <a class="nav-link" href="https://github.com/keenthinker/gcsv2json/wiki/Documentation" target="_blank" rel="noopener">Documentation</a>
+                  <a class="nav-link" href="index.html">Start</a>
+                  <a class="nav-link" href="https://github.com/keenthinker/gcsv2json/wiki" target="_blank" rel="noopener">Documentation</a>
                 </nav>
               </div>
             </header>
           
             <main role="main" class="inner cover">
-              <h1 class="cover-heading">Google CSV to JSON converter</h1>
+              <h1 class="cover-heading">REST API live demo</h1>
               <p class="lead">
-                  This REST API converts single Google Sheets published to the web in CSV format to JSON format.
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">CSV link</span>
+                    </div>
+                    <input type="text" id="publishedCSV" value="https://docs.google.com/spreadsheets/d/e/2PACX-1vRz58LmAPaCFKsMBRKZH30el7acWcSh8M7XROiNtoRfOMMWHb4bt6eQLjf9F8TF3ayV-tD2hIfrZZyJ/pub?gid=0&single=true&output=csv" class="form-control" placeholder="Link of the published CSV from Google Spreadsheets" aria-label="CSV Link" aria-describedby="basic-addon1">
+                  </div>
               </p>
               <p class="lead">
-                <a href="https://github.com/keenthinker/gcsv2json/wiki/Documentation" target="_blank" rel="noopener" class="btn btn-lg btn-primary">API Documentation</a>
-              </p>
-              <p class="lead">
-                <a href="livedemo.html" class="btn btn-lg btn-primary">Live demo</a>
-              </p>
+                <button id="convertCSV2JSON" class="btn btn-primary btn-block">Convert CSV to JSON using query parameter</button>
+            </p>
+            <p class="lead">
+                <span class="code">
+                    <pre class="text-left">
+csv = $('#publishedCSV').val();
+fetch("/api/?csv=" + encodeURIComponent(csv))
+.then(response => response.json())
+.then(data => $('#output').text(JSON.stringify(data, null, 2)));
+                    </pre>
+                </span>
+            </p>
+            <p class="lead">OR</p>
+            <p class="lead">
+                <button id="requestWithBody" class="btn btn-primary btn-block">Convert CSV to JSON using request with body parameter</button>
+            </p>
+            <p class="lead">
+                <span class="code">
+                    <pre class="text-left">
+data.csv = $('#publishedCSV').val();
+fetch("/api", { method: 'POST', mode: 'cors', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data) 
+})
+.then(response => response.json())
+.then(data => $('#output').text(JSON.stringify(data, null, 2)));
+                    </pre>
+                </span>
+            </p>
+            <p class="lead">
+                <span id="output">JSON will appear here</span>
+            </p>
             </main>
           
             <footer class="mastfoot mt-auto">
