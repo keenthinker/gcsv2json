@@ -1,6 +1,6 @@
 var https = require('https');
 
-// (c) https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
+// convertCSVToArray (c) https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
@@ -85,7 +85,7 @@ function convertCSVToArray(strData, strDelimiter) {
   // Return the parsed data.
   return (arrData);
 }
-
+// *** end of convertCSVToArray ***
 
 function getCSV(link) {
 
