@@ -1,7 +1,7 @@
 {
   "name": "gcsv2json",
   "version": "1.0.0",
-  "description": "Google CSV to JSON converter",
+  "description": "Generic CSV to JSON converter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
