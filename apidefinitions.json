@@ -1,0 +1,120 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This quickstart will take you through the basics of the [CSV2JSON model](https://gcsv2json.now.sh) and the usage of the [CSV to JSON REST API](https://gcsv2json.now.sh). You will need an api key ( `TODO` ), in order to test the api.",
+      "version": "1.0.0",
+      "title": "Generic CSV to JSON API",
+      "termsOfService": "https://gcsv2json.now.sh/terms",
+      "contact": {
+        "email": "hello@keenthinker.com"
+      }
+    },
+    "host": "gcsv2json.now.sh",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "api",
+        "description": ""
+      }
+    ],
+    "schemes": [
+      "https"
+    ],
+    "paths": {
+      "/index/": {
+        "get": {
+          "tags": [
+            "api"
+          ],
+          "summary": "Retrieves the CSV content and converts it to JSON.",
+          "description": "Retrieves the CSV content, convert it to JSON and serves the new content.",
+          "operationId": "convertByQuery",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "csv",
+              "in": "query",
+              "description": "URL that serves the CSV content. It should be encoded using 'encodeURIComponent'.",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "CSV content was fetched and transformed to JSON.",
+              "schema": {
+                "$ref": "#/definitions/Response"
+              }
+            },
+            "400": {
+              "description": "An error occured, for example - missing query parameter or host is unreachable."
+            }
+          }
+        }
+      },
+      "/index": {
+        "post": {
+          "tags": [
+            "api"
+          ],
+          "summary": "Retrieves the CSV content and converts it to JSON.",
+          "description": "Convinience method, if GET with query parameter is not possible for some reason. Retrieves the CSV content, convert it to JSON and serves the new content.",
+          "operationId": "convertByPost",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "csv",
+              "description": "URL that serves the CSV content.",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Body"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Item successfully created",
+              "schema": {
+                "$ref": "#/definitions/Response"
+              }
+            },
+            "400": {
+              "description": "An error occured, for example - missing query parameter or host is unreachable."
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Response": {
+        "type": "object",
+        "properties": {
+          "Column1": {
+            "type": "string"
+          },
+          "Column2": {
+            "type": "string"
+          },
+          "ColumnN": {
+            "type": "string"
+          }
+        }
+      },
+      "Body": {
+        "type": "object",
+        "properties": {
+          "csv": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
