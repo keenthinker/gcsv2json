@@ -7,5 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "the keenthinker",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "follow-redirects": "^1.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keenthinker/gcsv2json.git"
+  }
 }

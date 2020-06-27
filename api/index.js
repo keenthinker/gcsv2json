@@ -1,4 +1,4 @@
-var https = require('https');
+const { https } = require('follow-redirects');
 
 // convertCSVToArray (c) https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
 // This will parse a delimited string into an array of

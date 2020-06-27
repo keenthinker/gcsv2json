@@ -1,3 +1,5 @@
 .now
 .ionide
 .vscode
+
+node_modules
