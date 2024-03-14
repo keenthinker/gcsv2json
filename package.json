@@ -9,7 +9,7 @@
   "author": "the keenthinker",
   "license": "MIT",
   "dependencies": {
-    "follow-redirects": "^1.12.1"
+    "follow-redirects": "^1.15.6"
   },
   "repository": {
     "type": "git",
